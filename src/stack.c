@@ -7,15 +7,15 @@ void init_stack(Stack *s, size_t initial_size) {
   s->top = -1;
   s->sz = initial_size;
   s->is_empty = true;
-  s->data = (char*)malloc(10*sizeof(char));
+  s->data = (BracketInfo*)malloc(100*sizeof(BracketInfo));
 }
 
-bool push(Stack *s, char c) {
+bool push(Stack *s, BracketInfo *bi) {
   if (s->top+1 >= s->sz) {
     s->sz *= 2;
-    s->data = realloc(s->data, s->sz * sizeof(char));
+    s->data = realloc(s->data, s->sz * sizeof(BracketInfo));
   }
-  *(s->data + (++s->top)) = c;
+  *(s->data + (++s->top)) = *bi;
 
   if (s->is_empty) {
     s->is_empty = false;
@@ -27,21 +27,21 @@ bool is_empty(Stack *s) {
   return s->is_empty;
 }
 
-char peek(Stack *s) {
+BracketInfo peek(Stack *s) {
   if (s->top < 0) {
     fprintf(stderr, "[DEBUG] peek error: stack is empty\n");
-    return '\0';
+    return (BracketInfo){-1, -1};
   } else {
     return *(s->data + s->top);
   }
 }
 
-char pop(Stack *s) {
+BracketInfo pop(Stack *s) {
   if (s->top < 0) {
     fprintf(stderr, "[DEBUG] pop error: stack is empty\n");
-    return '\0';
+    return (BracketInfo){-1, -1};
   } else {
-    char res = *(s->data + s->top);
+    BracketInfo res = *(s->data + s->top);
     s->top--;
     if (s->top == -1) {
       s->is_empty = true;

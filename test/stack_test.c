@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <assert.h>
 
 #include "../src/stack.h"
@@ -9,18 +10,26 @@ int main(void) {
   init_stack(&s, 10);
 
   for (int i = 0; i < 10; ++i) {
-    push(&s, 'a' + i);
-    char actual = pop(&s);
-    assert('a' + i == actual);
+    BracketInfo bi = {2, 5};
+    push(&s, &bi);
+    BracketInfo actual = pop(&s);
+    assert(cmp_bracket_info(&bi, &actual));
   }
 
-  assert(pop(&s) == '\0');
-  assert(peek(&s) == '\0');
+  BracketInfo actual_pop = pop(&s);
+  BracketInfo null = {-1, -1};
+  assert(cmp_bracket_info(&actual_pop, &null));
+
+  BracketInfo actual_peek = peek(&s);
+  assert(cmp_bracket_info(&actual_peek, &null));
 
   for (int i = 0; i < 11; ++i) {
-    push(&s, 'a');
+    BracketInfo something = {i, i + 30};
+    push(&s, &something);
   }
-  assert(pop(&s) == 'a');
+  BracketInfo expected_pop = {10, 40};
+  actual_pop = pop(&s);
+  assert(cmp_bracket_info(&actual_pop, &expected_pop));
   assert(s.sz == 20);
 
   free_stack(&s);

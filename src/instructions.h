@@ -1,3 +1,6 @@
+#ifndef INSTRUCTIONS_H
+#define INSTRUCTIONS_H
+
 typedef struct {
   char *data;
   char *ip;
@@ -12,3 +15,5 @@ char out(Memory *mem);
 void in(Memory *mem);
 void jmp_if_zero(Memory *mem, int offset);
 void jmp_if_nonzero(Memory *mem, int offset);
+
+#endif
