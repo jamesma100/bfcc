@@ -21,5 +21,6 @@ int main(void) {
  	assert(out(&mem) == '2');
  	jmp_if_nonzero(&mem, 2);
  	assert(out(&mem) == '1');
+  printf("[TEST] all instructions tests passed!\n");
 	return 0;
 }

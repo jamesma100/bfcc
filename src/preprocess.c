@@ -3,11 +3,23 @@
 #include <stdbool.h>
 #include "stack.h"
 
+int num_cols = 100;
+int num_rows = 100;
+
+void free_bi_array(BracketInfo **bi) {
+  for (int i = 0; i < num_rows; ++i) {
+    free(bi[i]);
+    bi[i] = NULL;
+  }
+  free(bi);
+  bi = NULL;
+}
+
 bool cmp_bracket_info(BracketInfo *me, BracketInfo *you) {
   return (me->linenum == you->linenum && me->pos == you->pos);
 }
 
-int preprocess_file(char* input_file) {
+PreprocessInfo* preprocess_file(char* input_file) {
   FILE *fp;
   fp = fopen(input_file, "r");
   if (fp == NULL) {
@@ -17,12 +29,10 @@ int preprocess_file(char* input_file) {
   return preprocess(fp);
 }
 
-int preprocess(FILE *fp) {
+PreprocessInfo* preprocess(FILE *fp) {
   Stack brackets;
   init_stack(&brackets, 100);
 
-  int num_cols = 100;
-  int num_rows = 100;
   BracketInfo **open_to_close = (BracketInfo**) malloc(sizeof(BracketInfo*) * num_rows);
   for (int i = 0; i < num_rows; ++i) {
     open_to_close[i] = (BracketInfo*)malloc(sizeof(BracketInfo) * num_cols);
@@ -59,7 +69,7 @@ int preprocess(FILE *fp) {
         open_bi = pop(&brackets);
         if (cmp_bracket_info(&open_bi, &null_bi)) {
           fprintf(stderr, "[ERROR] compiler error - bracket mismatch.\n");
-          return 1;
+          return NULL;
         }
         close_bi = (BracketInfo){linenum, pos};
         open_to_close[open_bi.linenum][open_bi.pos] = close_bi;
@@ -73,7 +83,10 @@ int preprocess(FILE *fp) {
   }
   if (!is_empty(&brackets)) {
     fprintf(stderr, "[ERROR] compiler error - bracket mismatch.\n");
-    return 1;
+    return NULL;
   }
-  return 0;
+  PreprocessInfo *preprocess_info = (PreprocessInfo*)malloc(sizeof(PreprocessInfo));
+  preprocess_info->open_to_close = open_to_close;
+  preprocess_info->close_to_open = close_to_open;
+  return preprocess_info;
 }

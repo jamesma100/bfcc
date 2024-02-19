@@ -34,4 +34,5 @@ int main(void) {
 
   free_stack(&s);
   assert(s.sz == 0);
+  printf("[TEST] all stack tests passed!\n");
 }
