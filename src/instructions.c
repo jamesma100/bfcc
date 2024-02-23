@@ -9,7 +9,25 @@
  */
 void init_memory(Memory *mem, size_t initial_size) {
   mem->data = (char*)malloc(initial_size * sizeof(char));
+  mem->head = mem->data;
   mem->ip = mem->data;
+  mem->initial_size = initial_size;
+}
+
+/**
+ * Displays first n elements
+ */
+void display_first_n(Memory *mem, int n) {
+	if (n >= mem->initial_size) {
+		fprintf(stderr, "[ERROR]: not enough elements to display\n");
+		exit(1);
+	}
+	printf("[DEBUG]: displaying first ten elements:\n");
+	for (int i = 0; i < n; ++i) {
+		printf("%c ", *(mem->data + i));
+	}
+	printf("\n");
+
 }
 
 /**
@@ -59,17 +77,17 @@ void in(Memory *mem) {
 /**
  * Jump to matching closing bracket if current data is zero
  */
-void jmp_if_zero(Memory *mem, int offset) {
-	if (*mem->ip == 0) {
-		mem->ip += offset;
+void jmp_if_zero(Memory *mem, char *dest) {
+	if (*mem->ip == '0') {
+		mem->ip = dest;
 	}
 }
 
 /**
  * Jump to matching opening bracket if current data is nonzero
  */
-void jmp_if_nonzero(Memory *mem, int offset) {
-	if (*mem->ip != 0) {
-		mem->ip -= offset;
+void jmp_if_nonzero(Memory *mem, char *dest) {
+	if (*mem->ip != '0') {
+		mem->ip = dest;
 	}
 }
