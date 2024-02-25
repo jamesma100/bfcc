@@ -44,6 +44,7 @@ void init_instructions(Instructions *instructions, int num_rows, int num_cols) {
  */
 void free_instructions(Instructions *instructions) {
 	for (int i = 0; i < instructions->num_rows; ++i) {
+		free(instructions->data[i]);
 		instructions->data[i] = NULL;
 	}
 	free(instructions->data);
