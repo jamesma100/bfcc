@@ -10,8 +10,48 @@
 void init_memory(Memory *mem, size_t initial_size) {
   mem->data = (char*)malloc(initial_size * sizeof(char));
   mem->head = mem->data;
-  mem->ip = mem->data;
+  mem->ptr = mem->data;
   mem->initial_size = initial_size;
+}
+
+/**
+ * Free memory
+ */
+void free_memory(Memory *mem) {
+	free(mem->data);
+	mem->data = NULL;
+	mem->head = NULL;
+	mem->ptr = NULL;
+}
+
+/**
+ * Inititialize instructions
+ */
+void init_instructions(Instructions *instructions, int num_rows, int num_cols) {
+	instructions->num_rows = num_rows;
+	instructions->num_cols = num_cols;
+  char **data = (char**) malloc(sizeof(char*) * num_rows);
+  for (int i = 0; i < num_rows; ++i) {
+    data[i] = (char*)malloc(sizeof(char) * num_cols);
+  }
+  instructions->data = data;
+  instructions->linenum = 0;
+  instructions->pos = 0;
+}
+
+/**
+ * Free memory allocated for instructions
+ */
+void free_instructions(Instructions *instructions) {
+	for (int i = 0; i < instructions->num_rows; ++i) {
+		instructions->data[i] = NULL;
+	}
+	free(instructions->data);
+	instructions->data = NULL;
+	instructions->num_rows = 0;
+	instructions->num_cols = 0;
+	instructions->linenum = 0;
+	instructions->pos = 0;
 }
 
 /**
@@ -34,35 +74,35 @@ void display_first_n(Memory *mem, int n) {
  * Moves instruction pointer right by one
  */
 void right(Memory *mem) {
-	mem->ip++;
+	mem->ptr++;
 }
 
 /**
  * Moves instruction pointer left by one
  */
 void left(Memory *mem) {
-	mem->ip--;
+	mem->ptr--;
 }
 
 /**
  * Increments data currently pointed to by instruction pointer
  */
 void inc(Memory *mem) {
-	(*mem->ip)++;
+	(*mem->ptr)++;
 }
 
 /**
  * Decrements data currently pointed to by instruction pointer
  */
 void dec(Memory *mem) {
-	(*mem->ip)--;
+	(*mem->ptr)--;
 }
 
 /**
  * Outputs data currently pointed to by instruction pointer
  */
 char out(Memory *mem) {
-	return *mem->ip;
+	return *mem->ptr;
 }
 
 /**
@@ -71,23 +111,37 @@ char out(Memory *mem) {
 void in(Memory *mem) {
 	char c;
 	scanf("%c", &c);
-	*mem->ip = c;
+	*mem->ptr = c;
 }
 
 /**
  * Jump to matching closing bracket if current data is zero
  */
-void jmp_if_zero(Memory *mem, char *dest) {
-	if (*mem->ip == '0') {
-		mem->ip = dest;
+void jmp_if_zero(Memory *mem, Instructions *instructions, int dest_linenum, int dest_pos) {
+	if (dest_linenum >= instructions->num_rows) {
+		fprintf(stderr, "[ERROR] memory out of bounds!\n");
+	}
+	if (dest_pos >= instructions->num_cols) {
+		fprintf(stderr, "[ERROR] memory out of bounds!\n");
+	}
+	if (*mem->ptr == '0') {
+		instructions->linenum = dest_linenum;
+		instructions->pos = dest_pos;
 	}
 }
 
 /**
  * Jump to matching opening bracket if current data is nonzero
  */
-void jmp_if_nonzero(Memory *mem, char *dest) {
-	if (*mem->ip != '0') {
-		mem->ip = dest;
+void jmp_if_nonzero(Memory *mem, Instructions *instructions, int dest_linenum, int dest_pos) {
+	if (dest_linenum >= instructions->num_rows) {
+		fprintf(stderr, "[ERROR] memory out of bounds!\n");
+	}
+	if (dest_pos >= instructions->num_cols) {
+		fprintf(stderr, "[ERROR] memory out of bounds!\n");
+	}
+	if (*mem->ptr != '0') {
+		instructions->linenum = dest_linenum;
+		instructions->pos = dest_pos;
 	}
 }

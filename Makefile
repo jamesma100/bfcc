@@ -1,7 +1,7 @@
 .PHONY: all src test clean
 FLAGS = -Wall -Werror -pedantic
 
-SRC = stack instructions preprocess
+SRC = stack instructions preprocess compile
 TEST = stack-test instructions-test preprocess-test
 
 src: ${SRC}
@@ -15,6 +15,9 @@ all: ${SRC} ${TEST}
 
 clean:
 	rm bin/*
+
+compile: src/compile.c
+	gcc src/compile.c src/stack.c src/preprocess.c src/instructions.c -o bin/compile ${FLAGS}
 
 stack: src/stack.c src/stack.h
 	gcc -c src/stack.c -o bin/stack.o ${FLAGS}

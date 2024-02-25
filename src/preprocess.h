@@ -6,6 +6,7 @@
 typedef struct {
   int linenum;
   int pos;
+  char *dest;
 } BracketInfo;
 
 typedef struct {
