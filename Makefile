@@ -15,6 +15,7 @@ all: ${SRC} ${TEST}
 
 clean:
 	rm bin/*
+	rm output/*
 
 compile: src/compile.c
 	gcc src/compile.c src/stack.c src/preprocess.c src/instructions.c -o bin/compile ${FLAGS}

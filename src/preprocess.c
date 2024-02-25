@@ -53,7 +53,6 @@ PreprocessInfo* preprocess(FILE *fp) {
   BracketInfo close_bi;
   BracketInfo null_bi = {-1, -1};
   while ((linelen = getline(&line, &linecap, fp)) > 0) {
-    fwrite(line, linelen, 1, stdout);
     tmp = line;
     pos = 0;
     while (*tmp != '\0') {
@@ -75,7 +74,6 @@ PreprocessInfo* preprocess(FILE *fp) {
         open_to_close[open_bi.linenum][open_bi.pos] = close_bi;
         close_to_open[close_bi.linenum][close_bi.pos] = open_bi;
       }
-      printf("[DEBUG] bracket info: linenum: %d, pos: %d, char: %c\n", linenum, pos, *tmp);
       pos++;
       tmp++;
     }
@@ -88,5 +86,6 @@ PreprocessInfo* preprocess(FILE *fp) {
   PreprocessInfo *preprocess_info = (PreprocessInfo*)malloc(sizeof(PreprocessInfo));
   preprocess_info->open_to_close = open_to_close;
   preprocess_info->close_to_open = close_to_open;
+  fclose(fp);
   return preprocess_info;
 }

@@ -7,7 +7,7 @@
 #include "../src/preprocess.h"
 
 int main(void) {
-	PreprocessInfo *preprocess_info = preprocess_file("./input/input.txt");
+	PreprocessInfo *preprocess_info = preprocess_file("./input/hello_world_long.bf");
 	assert(preprocess_info != NULL);
 	assert(
 		preprocess_info->open_to_close[0][14].linenum == 0 &&
@@ -30,8 +30,8 @@ int main(void) {
 	free(preprocess_info);
 	preprocess_info = NULL;
 
-	assert(preprocess_file("./input/bad_input1.txt") == NULL);
-	assert(preprocess_file("./input/bad_input2.txt") == NULL);
+	assert(preprocess_file("./input/bad_input1.bf") == NULL);
+	assert(preprocess_file("./input/bad_input2.bf") == NULL);
 	printf("[TEST] all preprocess tests passed!\n");
 	return 0;
 }
