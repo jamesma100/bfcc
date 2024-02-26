@@ -15,6 +15,12 @@ void free_bi_array(BracketInfo **bi) {
   bi = NULL;
 }
 
+void free_preprocess_info(PreprocessInfo *preprocess_info) {
+  free_bi_array(preprocess_info->open_to_close);
+  free_bi_array(preprocess_info->close_to_open);
+  preprocess_info = NULL;
+}
+
 bool cmp_bracket_info(BracketInfo *me, BracketInfo *you) {
   return (me->linenum == you->linenum && me->pos == you->pos);
 }
@@ -33,11 +39,11 @@ PreprocessInfo* preprocess(FILE *fp) {
   Stack brackets;
   init_stack(&brackets, 100);
 
-  BracketInfo **open_to_close = (BracketInfo**) malloc(sizeof(BracketInfo*) * num_rows);
+  BracketInfo **open_to_close = (BracketInfo**)malloc(sizeof(BracketInfo*) * num_rows);
   for (int i = 0; i < num_rows; ++i) {
     open_to_close[i] = (BracketInfo*)malloc(sizeof(BracketInfo) * num_cols);
   }
-  BracketInfo **close_to_open = (BracketInfo**) malloc(sizeof(BracketInfo*) * num_rows);
+  BracketInfo **close_to_open = (BracketInfo**)malloc(sizeof(BracketInfo*) * num_rows);
   for (int i = 0; i < num_rows; ++i) {
     close_to_open[i] = (BracketInfo*)malloc(sizeof(BracketInfo) * num_cols);
   }

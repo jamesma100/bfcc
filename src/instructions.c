@@ -125,35 +125,3 @@ void in(Memory *mem) {
 	scanf("%c", &c);
 	*mem->ptr = c;
 }
-
-/**
- * Jump to matching closing bracket if current data is zero
- */
-void jmp_if_zero(Memory *mem, Instructions *instructions, int dest_linenum, int dest_pos) {
-	if (dest_linenum >= instructions->num_rows) {
-		fprintf(stderr, "[ERROR] memory out of bounds!\n");
-	}
-	if (dest_pos >= instructions->num_cols) {
-		fprintf(stderr, "[ERROR] memory out of bounds!\n");
-	}
-	if (*mem->ptr == '0') {
-		instructions->linenum = dest_linenum;
-		instructions->pos = dest_pos;
-	}
-}
-
-/**
- * Jump to matching opening bracket if current data is nonzero
- */
-void jmp_if_nonzero(Memory *mem, Instructions *instructions, int dest_linenum, int dest_pos) {
-	if (dest_linenum >= instructions->num_rows) {
-		fprintf(stderr, "[ERROR] memory out of bounds!\n");
-	}
-	if (dest_pos >= instructions->num_cols) {
-		fprintf(stderr, "[ERROR] memory out of bounds!\n");
-	}
-	if (*mem->ptr != '0') {
-		instructions->linenum = dest_linenum;
-		instructions->pos = dest_pos;
-	}
-}

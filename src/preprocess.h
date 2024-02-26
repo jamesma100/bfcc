@@ -17,6 +17,7 @@ typedef struct {
 
 bool cmp_bracket_info(BracketInfo *me, BracketInfo *you);
 void free_bi_array(BracketInfo **bi);
+void free_preprocess_info(PreprocessInfo *preprocess_info);
 PreprocessInfo* preprocess_file(char* input_file);
 PreprocessInfo* preprocess(FILE* fp);
 

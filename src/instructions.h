@@ -27,7 +27,5 @@ void inc(Memory *mem);
 void dec(Memory *mem);
 char out(Memory *mem);
 void in(Memory *mem);
-void jmp_if_zero(Memory *mem, Instructions *instructions, int dest_line, int dest_pos);
-void jmp_if_nonzero(Memory *mem, Instructions *instructions, int dest_line, int dest_pos);
 
 #endif

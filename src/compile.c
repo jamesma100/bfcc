@@ -7,14 +7,13 @@
 
 
 int main(int argc, char *argv[]) {
-  printf("[DEBUG]: starting compilation...\n");
-  if (argc < 3) {
+  printf("[LOG] Starting compilation...\n");
+  if (argc < 2) {
     fprintf(stderr, "Too few arguments. Exiting.\n");
     exit(1);
   }
   char *filename = argv[1];
-  char *output = argv[2];
-  printf("[DEBUG]: Preprocessing file: %s\n", filename);
+  printf("[LOG] Preprocessing file: %s\n", filename);
   PreprocessInfo *preprocess_info = preprocess_file(filename);
 
   FILE *fp = fopen(filename, "r");
@@ -37,15 +36,6 @@ int main(int argc, char *argv[]) {
   Instructions instructions;
   init_instructions(&instructions, num_rows, num_cols);
 
-  FILE *fp_out = fopen(output, "w");
-  fprintf(fp_out, "#include <stdio.h>\n");
-  fprintf(fp_out, "#include <stdlib.h>\n");
-  fprintf(fp_out, "#include \"../src/instructions.h\"\n\n");
-  fprintf(fp_out, "int main(void) {\n");
-  fprintf(fp_out, "  Memory mem;\n");
-  fprintf(fp_out, "  init_memory(&mem, 100);\n");
-
-  // TODO: don't do this
   Memory mem;
   init_memory(&mem, 100);
 
@@ -79,22 +69,18 @@ int main(int argc, char *argv[]) {
     switch(instruction) {
       case '<':
         left(&mem);
-        fprintf(fp_out, "  left(&mem);\n");
         pos++;
         break;
       case '>':
         right(&mem);
-        fprintf(fp_out, "  right(&mem);\n");
         pos++;
         break;
       case '+':
         inc(&mem);
-        fprintf(fp_out, "  inc(&mem);\n");
         pos++;
         break;
       case '-':
         dec(&mem);
-        fprintf(fp_out, "  dec(&mem);\n");
         pos++;
         break;
       case '[':
@@ -119,12 +105,10 @@ int main(int argc, char *argv[]) {
         break;
       case ',':
         in(&mem);
-        fprintf(fp_out, "  in(&mem);\n");
         pos++;
         break;
       case '.':
         out(&mem);
-        fprintf(fp_out, "  out(&mem);\n");
         pos++;
         break;
       default:
@@ -132,10 +116,8 @@ int main(int argc, char *argv[]) {
         break;
     }
   }
-  fprintf(fp_out, "  free_memory(&mem);\n");
-  fprintf(fp_out, "}\n");
+  free_preprocess_info(preprocess_info);
   free_instructions(&instructions);
   free_memory(&mem);
-  fclose(fp_out);
   return 0;
 }
