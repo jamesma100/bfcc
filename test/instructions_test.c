@@ -17,7 +17,7 @@ int main(void) {
   inc(&mem);
   // 1 0 0 0 0 0 0 0 0 0
   // |
-  assert(out(&mem) == 1);
+  assert(out(&mem) == '1');
   right(&mem);
   right(&mem);
   // 1 0 0 0 0 0 0 0 0 0
@@ -26,7 +26,7 @@ int main(void) {
   inc(&mem);
   // 1 0 2 0 0 0 0 0 0 0
   //     |
-  assert(out(&mem) == 2);
+  assert(out(&mem) == '2');
 
   free_memory(&mem);
 

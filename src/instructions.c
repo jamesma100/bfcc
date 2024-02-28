@@ -8,13 +8,13 @@
  * Allocates initial memory
  */
 void init_memory(Memory *mem, size_t initial_size) {
-  mem->data = (char*)malloc(initial_size * sizeof(char));
+  mem->data = (int*)malloc(initial_size * sizeof(int));
   mem->head = mem->data;
   mem->ptr = mem->data;
   mem->initial_size = initial_size;
   // TODO: lazy initialization
   for (int i = 0; i < initial_size; ++i) {
-  	mem->data[i] = '0';
+  	mem->data[i] = 0;
   }
 }
 
@@ -113,8 +113,8 @@ void dec(Memory *mem) {
  * Outputs data currently pointed to by instruction pointer
  */
 char out(Memory *mem) {
-	printf("%c\n", *mem->ptr - '0');
-	return *mem->ptr - '0';
+	printf("%c\n", *mem->ptr);
+	return *mem->ptr;
 }
 
 /**
@@ -122,6 +122,6 @@ char out(Memory *mem) {
  */
 void in(Memory *mem) {
 	char c;
-	scanf("%c", &c);
+	scanf(" %c", &c);
 	*mem->ptr = c;
 }

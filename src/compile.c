@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
       case '[':
         dest_linenum = preprocess_info->open_to_close[linenum][pos].linenum;
         dest_pos = preprocess_info->open_to_close[linenum][pos].pos + 1;
-        if (*(mem.ptr) == '0') {
+        if (*(mem.ptr) == 0) {
           linenum = dest_linenum;
           pos = dest_pos;
         } else {
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
       case ']':
         dest_linenum = preprocess_info->close_to_open[linenum][pos].linenum;
         dest_pos = preprocess_info->close_to_open[linenum][pos].pos + 1;
-        if (*(mem.ptr) != '0') {
+        if (*(mem.ptr) != 0) {
           linenum = dest_linenum;
           pos = dest_pos;
         } else {

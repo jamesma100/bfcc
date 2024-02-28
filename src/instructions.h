@@ -2,9 +2,9 @@
 #define INSTRUCTIONS_H
 
 typedef struct {
-  char *head;
-  char *data;
-  char *ptr;
+  int *head;
+  int *data;
+  int *ptr;
   size_t initial_size;
 } Memory;
 
