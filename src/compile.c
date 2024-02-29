@@ -7,13 +7,11 @@
 
 
 int main(int argc, char *argv[]) {
-  printf("[LOG] Starting compilation...\n");
   if (argc < 2) {
     fprintf(stderr, "Too few arguments. Exiting.\n");
     exit(1);
   }
   char *filename = argv[1];
-  printf("[LOG] Preprocessing file: %s\n", filename);
   PreprocessInfo *preprocess_info = preprocess_file(filename);
 
   FILE *fp = fopen(filename, "r");

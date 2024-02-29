@@ -93,6 +93,5 @@ PreprocessInfo* preprocess(FILE *fp) {
   preprocess_info->open_to_close = open_to_close;
   preprocess_info->close_to_open = close_to_open;
   fclose(fp);
-  printf("[LOG] Done preprocessing\n");
   return preprocess_info;
 }
